@@ -1,4 +1,6 @@
 const puppeteer = require('puppeteer'); //node env
+var stringify = require('csv-stringify');
+var fs = require('file-system');
 
 (async () => {
     const browser = await puppeteer.launch({
@@ -11,7 +13,10 @@ const puppeteer = require('puppeteer'); //node env
             height: 1000,
             deviceScaleFactor:1,
         })
+        // to go to specific page
         await page.goto("https://www.imdb.com/chart/top/?ref_=nv_mv_250");
+
+        // to get info using HTML DOM
         const data = await page.evaluate(() => {
             let title = Array.from(document.querySelectorAll("tbody.lister-list tr td.titleColumn a")).map((list) => list.innerText);
 
@@ -30,12 +35,22 @@ const puppeteer = require('puppeteer'); //node env
                 rating:list.querySelector("td.ratingColumn strong").innerHTML
             }))
 
-
             return movies;
         })
         //await page.screenshot({path: 'images/example1.png'});
 
-        console.log("list" , data);
+        console.log("list", data);
+        stringify(data, function(err, output){
+            fs.writeFile("file/movie.csv", output, "utf8", function(err){
+                if (err){
+                    console.log(
+                        "Error - file cannot be saved"
+                    )
+                } else {
+                    console.log("It's saved");
+                }
+            })
+        });
 
     await browser.close();
 })();
