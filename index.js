@@ -16,6 +16,10 @@ var fs = require('file-system');
         // to go to specific page
         await page.goto("https://www.imdb.com/chart/top/?ref_=nv_mv_250");
 
+        // to go to selection page
+        // await page.select("select#lister-sort-by-options","us:descending",);
+        const elementHandle = await page.$("input#suggestion-search")
+
         // to get info using HTML DOM
         const data = await page.evaluate(() => {
             let title = Array.from(document.querySelectorAll("tbody.lister-list tr td.titleColumn a")).map((list) => list.innerText);
