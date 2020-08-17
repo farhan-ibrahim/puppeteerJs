@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "csv-string": "^4.0.1",
+    "csv-stringify": "^5.5.1",
+    "fs": "0.0.1-security",
     "puppeteer": "^5.2.1"
   }
 }
